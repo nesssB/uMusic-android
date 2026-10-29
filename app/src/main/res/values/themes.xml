@@ -1,0 +1,4 @@
+<resources>
+    <!-- Only used until Compose draws the first frame; the real theme lives in ui/theme. -->
+    <style name="Theme.UMusic" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
