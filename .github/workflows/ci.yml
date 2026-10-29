@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+# A new push to the same branch cancels the run still in progress
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Also validates gradle-wrapper.jar and caches Gradle's dependencies
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: ktlint
+        run: ./gradlew ktlintCheck
+
+      # checkDependencies = true, so this also covers :core
+      - name: Android Lint
+        run: ./gradlew :app:lint
+
+      - name: Unit tests (:core)
+        run: ./gradlew :core:testDebugUnitTest
+
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: reports
+          path: '**/build/reports/'
+          retention-days: 7
