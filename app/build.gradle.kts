@@ -4,26 +4,46 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+// Release signing key, kept outside the repo. Set these in ~/.gradle/gradle.properties or,
+// in CI, as ORG_GRADLE_PROJECT_<name> environment variables. Without them the release
+// build is left unsigned.
+val releaseStoreFile = providers.gradleProperty("umusicReleaseStoreFile").orNull
+val releaseStorePassword = providers.gradleProperty("umusicReleaseStorePassword").orNull
+val releaseKeyAlias = providers.gradleProperty("umusicReleaseKeyAlias").orNull
+
 android {
-    namespace = "com.nesssb.umusic"
+    namespace = "io.github.nesssb.umusic"
     compileSdk {
-        version = release(37) {
-            minorApiLevel = 2
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = libs.versions.compileSdkMinor.get().toInt()
         }
     }
 
     defaultConfig {
-        applicationId = "com.nesssb.umusic"
-        minSdk = 26
-        targetSdk = 37
+        applicationId = "io.github.nesssb.umusic"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = file(releaseStoreFile)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                // PKCS12 keystores use the same password for the store and the key
+                keyPassword = releaseStorePassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = false
             }
@@ -38,10 +58,18 @@ android {
     buildFeatures {
         compose = true
     }
+    lint {
+        lintConfig = rootProject.file("lint.xml")
+        // Also analyze :core so `:app:lint` covers the whole project
+        checkDependencies = true
+        warningsAsErrors = true
+    }
 }
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
+
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
 
@@ -61,13 +89,8 @@ dependencies {
     implementation(libs.androidx.media3.session)
     implementation(libs.kotlinx.coroutines.guava)
 
-    implementation(libs.okhttp)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.newpipe.extractor)
-
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

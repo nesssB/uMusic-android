@@ -57,6 +57,8 @@ running emulator. You can also open the project in Android Studio and press
 | `./gradlew test`                 | Run the unit tests                                |
 | `./gradlew connectedAndroidTest` | Run the instrumented tests on a connected device  |
 | `./gradlew lint`                 | Run Android Lint                                  |
+| `./gradlew ktlintCheck`          | Check Kotlin code style with ktlint               |
+| `./gradlew ktlintFormat`         | Fix ktlint violations that can be auto-corrected  |
 
 On Windows, use `gradlew.bat` instead of `./gradlew`.
 
