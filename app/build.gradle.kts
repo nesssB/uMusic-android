@@ -4,6 +4,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+// Release signing key, kept outside the repo. Set these in ~/.gradle/gradle.properties or,
+// in CI, as ORG_GRADLE_PROJECT_<name> environment variables. Without them the release
+// build is left unsigned.
+val releaseStoreFile = providers.gradleProperty("umusicReleaseStoreFile").orNull
+val releaseStorePassword = providers.gradleProperty("umusicReleaseStorePassword").orNull
+val releaseKeyAlias = providers.gradleProperty("umusicReleaseKeyAlias").orNull
+
 android {
     namespace = "io.github.nesssb.umusic"
     compileSdk {
@@ -22,8 +29,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = file(releaseStoreFile)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                // PKCS12 keystores use the same password for the store and the key
+                keyPassword = releaseStorePassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = false
             }
