@@ -1,4 +1,4 @@
-package com.nesssb.umusic.ui.theme
+package io.github.nesssb.umusic.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

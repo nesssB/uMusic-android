@@ -1,4 +1,4 @@
-package com.nesssb.umusic
+package io.github.nesssb.umusic
 
 import org.junit.Test
 

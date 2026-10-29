@@ -1,4 +1,4 @@
-package com.nesssb.umusic
+package io.github.nesssb.umusic
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.nesssb.umusic.ui.theme.UMusicTheme
+import io.github.nesssb.umusic.ui.theme.UMusicTheme
 
 class MainActivity : ComponentActivity() {
 

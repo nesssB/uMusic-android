@@ -27,4 +27,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "uMusic"
 include(":app")
+include(":core")
  

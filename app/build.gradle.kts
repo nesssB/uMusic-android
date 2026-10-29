@@ -5,17 +5,17 @@ plugins {
 }
 
 android {
-    namespace = "com.nesssb.umusic"
+    namespace = "io.github.nesssb.umusic"
     compileSdk {
-        version = release(37) {
-            minorApiLevel = 2
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = libs.versions.compileSdkMinor.get().toInt()
         }
     }
 
     defaultConfig {
-        applicationId = "com.nesssb.umusic"
-        minSdk = 26
-        targetSdk = 37
+        applicationId = "io.github.nesssb.umusic"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -43,6 +43,8 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
 
+    implementation(project(":core"))
+
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.androidx.activity.compose)
@@ -61,13 +63,8 @@ dependencies {
     implementation(libs.androidx.media3.session)
     implementation(libs.kotlinx.coroutines.guava)
 
-    implementation(libs.okhttp)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.newpipe.extractor)
-
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

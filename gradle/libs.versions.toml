@@ -1,4 +1,9 @@
 [versions]
+compileSdk = "37"
+compileSdkMinor = "2"
+targetSdk = "37"
+minSdk = "26"
+
 agp = "9.5.0"
 kotlin = "2.4.21"
 coreKtx = "1.19.1"
@@ -52,5 +57,6 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
