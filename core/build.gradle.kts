@@ -24,6 +24,10 @@ android {
         // Required by NewPipe Extractor on minSdk < 33
         isCoreLibraryDesugaringEnabled = true
     }
+    lint {
+        lintConfig = rootProject.file("lint.xml")
+        warningsAsErrors = true
+    }
 }
 
 dependencies {

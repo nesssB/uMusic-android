@@ -1,0 +1,28 @@
+# Aligned with the desktop app's Prettier config (uMusic/.prettierrc.yaml):
+# 2-space indentation, LF line endings, 100-column lines.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 100
+
+# Kotlin keeps the official 4-space indentation; checked by ktlint
+[*.{kt,kts}]
+indent_size = 4
+ktlint_code_style = intellij_idea
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Android Studio's default for resources and manifests
+[*.xml]
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.bat]
+end_of_line = crlf
